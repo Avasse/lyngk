@@ -30,3 +30,8 @@ LyngkTestCase.prototype.testStory2 = function(){
     }
     assertEquals("Not valid sum of valid coordinates", sum, 43);
 };
+
+LyngkTestCase.prototype.testStory3 = function(){
+    var coordinates = new Lyngk.Coordinates('A',1);
+    assertFalse(coordinates.is_string());
+};
