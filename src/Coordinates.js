@@ -21,7 +21,7 @@ Lyngk.Coordinates = function (c, l) {
             'C7', 'D7', 'E7', 'F7', 'G7', 'H7', 'I7',
             'E8', 'F8', 'G8', 'H8',
             'G9']
-        if(validPositions.contains(c+l)) return true;
-        else return true;
+        if(validPositions.includes(c+l)) return true;
+        else return false;
     }
 };
