@@ -72,7 +72,21 @@ LyngkTestCase.prototype.testStory8 = function(){
     var intersection = new Lyngk.Intersection();
     intersection.add_Piece(bluePiece);
     intersection.add_Piece(redPiece);
-    intersection.get_Color();
     assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.STACK);
     assertEquals("Intersection color should be RED", intersection.get_Color(), Lyngk.Color.RED);
+};
+
+LyngkTestCase.prototype.testStory9 = function(){
+    var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
+    var redPiece = new Lyngk.Piece(Lyngk.Color.RED);
+    var blackPiece = new Lyngk.Piece(Lyngk.Color.BLACK);
+    var greenPiece = new Lyngk.Piece(Lyngk.Color.GREEN);
+    var ivoryPiece = new Lyngk.Piece(Lyngk.Color.IVORY);
+    var intersection = new Lyngk.Intersection();
+    intersection.add_Piece(bluePiece);
+    intersection.add_Piece(redPiece);
+    intersection.add_Piece(blackPiece);
+    intersection.add_Piece(greenPiece);
+    intersection.add_Piece(ivoryPiece);
+    assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.FULL_STACK);
 };
