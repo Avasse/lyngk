@@ -46,3 +46,10 @@ LyngkTestCase.prototype.testStory5 = function(){
     var coordinates2 = coordinates1.clone();
     assertEquals("Coordinates are not equals", coordinates2.to_string(), coordinates1.to_string());
 };
+
+LyngkTestCase.prototype.testStory6 = function(){
+    var firstCoordinates = new Lyngk.Coordinates('A',1);
+    var secondCoordinates = new Lyngk.Coordinates('B',4);
+    var thirdCoordinates = new Lyngk.Coordinates('D',2);
+    assertTrue(firstCoordinates.to_hash !== secondCoordinates.to_hash !== thirdCoordinates.to_hash);
+};
