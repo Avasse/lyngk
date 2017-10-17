@@ -8,4 +8,8 @@ Lyngk.Intersection = function () {
     this.get_State = function () {
         return state;
     }
+
+    this.add_Piece = function (p) {
+        state = Lyngk.State.ONE_PIECE;
+    }
 };
