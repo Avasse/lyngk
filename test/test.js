@@ -56,12 +56,12 @@ LyngkTestCase.prototype.testStory6 = function(){
 
 LyngkTestCase.prototype.testStory7 = function(){
     var intersection = new Lyngk.Intersection();
-    assertEquals("Default intersection state should be 0", intersection.get_State(), 0);
+    assertEquals("Default intersection state should be 0", intersection.get_State(), Lyngk.State.VACANT);
 };
 
 LyngkTestCase.prototype.testStory8 = function(){
-    var pieceBleu = new Lyngk.Piece(Lyngk.Color.BLUE);
+    var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var intersection = new Lyngk.Intersection();
-    intersection.add_Piece(pieceBleu);
-    assertEquals("Intersection state should be 1", intersection.get_State(), 1);
+    intersection.add_Piece(bluePiece);
+    assertEquals("Intersection state should be 1", intersection.get_State(), Lyngk.State.ONE_PIECE);
 };
