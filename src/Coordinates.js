@@ -24,4 +24,9 @@ Lyngk.Coordinates = function (c, l) {
         if(validPositions.includes(c+l)) return true;
         else return false;
     }
+
+    this.to_string = function () {
+        if (this.is_valid()) return (c+l).toString();
+        else return 'invalid'
+    }
 };
