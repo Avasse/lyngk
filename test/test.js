@@ -51,5 +51,5 @@ LyngkTestCase.prototype.testStory6 = function(){
     var firstCoordinates = new Lyngk.Coordinates('A',1);
     var secondCoordinates = new Lyngk.Coordinates('B',4);
     var thirdCoordinates = new Lyngk.Coordinates('D',2);
-    assertTrue(firstCoordinates.to_hash !== secondCoordinates.to_hash !== thirdCoordinates.to_hash);
+    assertTrue("Hashes shouldn't be equals", firstCoordinates.to_hash !== secondCoordinates.to_hash !== thirdCoordinates.to_hash);
 };
