@@ -1,6 +1,13 @@
 "use strict";
 
 Lyngk.Coordinates = function (c, l) {
+    var col;
+    var line;
+    var init = function(c, l) {
+        col = c;
+        line = l;
+    }
+    init(c, l);
 
     var validPositions = ['C1', 'B2', 'C2', 'D2', 'E2',
         'A3', 'B3', 'C3', 'D3', 'E3', 'F3', 'G3',
@@ -10,16 +17,6 @@ Lyngk.Coordinates = function (c, l) {
         'C7', 'D7', 'E7', 'F7', 'G7', 'H7', 'I7',
         'E8', 'F8', 'G8', 'H8',
         'G9'];
-
-    var Coordinates = function(c, l) {
-        var col;
-        var line;
-        var init = function(c, l) {
-            col = c;
-            line = l;
-        }
-        init(c, l);
-    };
 
     this.is_valid = function () {
 
