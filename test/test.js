@@ -44,5 +44,5 @@ LyngkTestCase.prototype.testStory4 = function(){
 LyngkTestCase.prototype.testStory5 = function(){
     var coordinates1 = new Lyngk.Coordinates('A',1);
     var coordinates2 = coordinates1.clone();
-    assertEquals("Coordonnées are not equals", coordinates2.to_string(), "A1");
+    assertEquals("Coordinates are not equals", coordinates2.to_string(), coordinates1.to_string());
 };

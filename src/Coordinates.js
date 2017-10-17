@@ -29,4 +29,8 @@ Lyngk.Coordinates = function (c, l) {
         if (this.is_valid()) return (c+l).toString();
         else return 'invalid'
     }
+
+    this.clone = function () {
+        return new Lyngk.Coordinates(c, l);
+    }
 };
