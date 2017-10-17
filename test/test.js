@@ -40,3 +40,9 @@ LyngkTestCase.prototype.testStory4 = function(){
     var coordinates = new Lyngk.Coordinates('A',1);
     assertEquals("toString should return 'invalid'", coordinates.to_string(), "invalid");
 };
+
+LyngkTestCase.prototype.testStory5 = function(){
+    var coordinates1 = new Lyngk.Coordinates('A',1);
+    var coordinates2 = coordinates1.clone();
+    assertEquals("Coordonnées are not equals", coordinates2.to_string(), "A1");
+};
