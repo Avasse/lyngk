@@ -53,3 +53,8 @@ LyngkTestCase.prototype.testStory6 = function(){
     var thirdCoordinates = new Lyngk.Coordinates('D',2);
     assertTrue("Hashes shouldn't be equals", firstCoordinates.to_hash !== secondCoordinates.to_hash !== thirdCoordinates.to_hash);
 };
+
+LyngkTestCase.prototype.testStory7 = function(){
+    var intersection = new Lyngk.Intersection();
+    assertEquals("Default intersection state should be 0", intersection.get_State(), 0);
+};
