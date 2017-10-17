@@ -17,11 +17,16 @@ Lyngk.Intersection = function () {
         if (state === Lyngk.State.VACANT) {
             pieces.push(p)
             state = Lyngk.State.ONE_PIECE;
-        }
-        else if(state === Lyngk.State.ONE_PIECE){
+        } else if (state === Lyngk.State.ONE_PIECE){
             pieces.push(p)
             state = Lyngk.State.STACK;
+        } else if (pieces.length > 1 && pieces.length < 4){
+            pieces.push(p);
+        } else {
+            pieces.push(p);
+            state = Lyngk.State.FULL_STACK;
         }
+
     }
 
     this.get_Color = function () {
