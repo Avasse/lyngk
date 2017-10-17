@@ -32,6 +32,11 @@ LyngkTestCase.prototype.testStory2 = function(){
 };
 
 LyngkTestCase.prototype.testStory3 = function(){
+    var coordinates = new Lyngk.Coordinates('B',3);
+    assertEquals("Coordinates aren't String", coordinates.to_string(), "B3");
+};
+
+LyngkTestCase.prototype.testStory4 = function(){
     var coordinates = new Lyngk.Coordinates('A',1);
-    assertFalse(coordinates.is_string());
+    assertEquals("toString should return 'invalid'", coordinates.to_string(), "invalid");
 };
