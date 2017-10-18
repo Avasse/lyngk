@@ -62,31 +62,41 @@ LyngkTestCase.prototype.testStory7 = function(){
 LyngkTestCase.prototype.testStory8 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var intersection = new Lyngk.Intersection();
-    intersection.add_Piece(bluePiece);
+    intersection.add_piece(bluePiece);
     assertEquals("Intersection state should be ONE_PIECE", intersection.get_State(), Lyngk.State.ONE_PIECE);
 };
 
-LyngkTestCase.prototype.testStory8 = function(){
+LyngkTestCase.prototype.testStory9 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var redPiece = new Lyngk.Piece(Lyngk.Color.RED);
     var intersection = new Lyngk.Intersection();
-    intersection.add_Piece(bluePiece);
-    intersection.add_Piece(redPiece);
+    intersection.add_piece(bluePiece);
+    intersection.add_piece(redPiece);
     assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.STACK);
     assertEquals("Intersection color should be RED", intersection.get_Color(), Lyngk.Color.RED);
 };
 
-LyngkTestCase.prototype.testStory9 = function(){
+LyngkTestCase.prototype.testStory10 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var redPiece = new Lyngk.Piece(Lyngk.Color.RED);
     var blackPiece = new Lyngk.Piece(Lyngk.Color.BLACK);
     var greenPiece = new Lyngk.Piece(Lyngk.Color.GREEN);
     var ivoryPiece = new Lyngk.Piece(Lyngk.Color.IVORY);
     var intersection = new Lyngk.Intersection();
-    intersection.add_Piece(bluePiece);
-    intersection.add_Piece(redPiece);
-    intersection.add_Piece(blackPiece);
-    intersection.add_Piece(greenPiece);
-    intersection.add_Piece(ivoryPiece);
+    intersection.add_piece(bluePiece);
+    intersection.add_piece(redPiece);
+    intersection.add_piece(blackPiece);
+    intersection.add_piece(greenPiece);
+    intersection.add_piece(ivoryPiece);
+    assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.FULL_STACK);
+};
+
+LyngkTestCase.prototype.testStory11 = function(){
+    Lyngk.validPositions.forEach(function(position) {
+        var piece = new Lyngk.Piece(Lyngk.Color.WHITE);
+        var intersection = new Lyngk.Intersection(position);
+        intersection.add_piece(piece);
+        Engine.add_intersection(intersection);
+    });
     assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.FULL_STACK);
 };
