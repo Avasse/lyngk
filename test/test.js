@@ -106,3 +106,27 @@ LyngkTestCase.prototype.testStory11 = function(){
         assertEquals("Intersection state should be ONE_PIECE", intersection.get_state(), Lyngk.State.ONE_PIECE);
     });
 };
+
+
+LyngkTestCase.prototype.testStory12 = function(){
+    var ivoryPieces = 0, bluePieces = 0, redPieces = 0, blackPieces = 0, greenPieces = 0, whitePieces = 0;
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+
+    intersections.forEach(function(intersection) {
+        if (intersection.get_color() === Lyngk.Color.IVORY) ivoryPieces ++;
+        if (intersection.get_color() === Lyngk.Color.BLUE) bluePieces ++;
+        if (intersection.get_color() === Lyngk.Color.RED) redPieces ++;
+        if (intersection.get_color() === Lyngk.Color.BLACK) blackPieces ++;
+        if (intersection.get_color() === Lyngk.Color.GREEN) greenPieces ++;
+        if (intersection.get_color() === Lyngk.Color.WHITE) whitePieces ++;
+    });
+
+    assertEquals("We should have 8 IVORY pieces", ivoryPieces, 8);
+    assertEquals("We should have 8 BLUE pieces", bluePieces, 8);
+    assertEquals("We should have 8 RED pieces", redPieces, 8);
+    assertEquals("We should have 8 BLACK pieces", blackPieces, 8);
+    assertEquals("We should have 8 GREEN pieces", greenPieces, 8);
+    assertEquals("We should have 8 WHITE pieces", whitePieces, 3);
+
+};
