@@ -56,14 +56,14 @@ LyngkTestCase.prototype.testStory6 = function(){
 
 LyngkTestCase.prototype.testStory7 = function(){
     var intersection = new Lyngk.Intersection();
-    assertEquals("Default intersection state should be VACANT", intersection.get_State(), Lyngk.State.VACANT);
+    assertEquals("Default intersection state should be VACANT", intersection.get_state(), Lyngk.State.VACANT);
 };
 
 LyngkTestCase.prototype.testStory8 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var intersection = new Lyngk.Intersection();
     intersection.add_piece(bluePiece);
-    assertEquals("Intersection state should be ONE_PIECE", intersection.get_State(), Lyngk.State.ONE_PIECE);
+    assertEquals("Intersection state should be ONE_PIECE", intersection.get_state(), Lyngk.State.ONE_PIECE);
 };
 
 LyngkTestCase.prototype.testStory9 = function(){
@@ -72,8 +72,8 @@ LyngkTestCase.prototype.testStory9 = function(){
     var intersection = new Lyngk.Intersection();
     intersection.add_piece(bluePiece);
     intersection.add_piece(redPiece);
-    assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.STACK);
-    assertEquals("Intersection color should be RED", intersection.get_Color(), Lyngk.Color.RED);
+    assertEquals("Intersection state should be STACK", intersection.get_state(), Lyngk.State.STACK);
+    assertEquals("Intersection color should be RED", intersection.get_color(), Lyngk.Color.RED);
 };
 
 LyngkTestCase.prototype.testStory10 = function(){
@@ -88,15 +88,18 @@ LyngkTestCase.prototype.testStory10 = function(){
     intersection.add_piece(blackPiece);
     intersection.add_piece(greenPiece);
     intersection.add_piece(ivoryPiece);
-    assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.FULL_STACK);
+    assertEquals("Intersection state should be STACK", intersection.get_state(), Lyngk.State.FULL_STACK);
 };
 
 LyngkTestCase.prototype.testStory11 = function(){
-    Lyngk.validPositions.forEach(function(position) {
-        var piece = new Lyngk.Piece(Lyngk.Color.WHITE);
-        var intersection = new Lyngk.Intersection(position);
-        intersection.add_piece(piece);
-        Engine.add_intersection(intersection);
+    //init will create an intersection with a single piece on each validPosition (create the gaming board).
+    var engine = new Lyngk.Engine();
+
+    // Get all intersections of our gaming board.
+    var intersections = engine.get_intersections()
+
+    //for each validPosition, check if the state of the intersection is ONE_PIECE;
+    intersections.forEach(function(intersection) {
+        assertEquals("Intersection state should be ONE_PIECE", intersection.get_state(), Lyngk.State.ONE_PIECE);
     });
-    assertEquals("Intersection state should be STACK", intersection.get_State(), Lyngk.State.FULL_STACK);
 };
