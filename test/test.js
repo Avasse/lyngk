@@ -92,13 +92,16 @@ LyngkTestCase.prototype.testStory10 = function(){
 };
 
 LyngkTestCase.prototype.testStory11 = function(){
-    //init will create an intersection with a single piece on each validPosition (create the gaming board).
+    // init will create an intersection with a single piece on each validPosition (create the gaming board).
     var engine = new Lyngk.Engine();
 
     // Get all intersections of our gaming board.
     var intersections = engine.get_intersections()
 
-    //for each validPosition, check if the state of the intersection is ONE_PIECE;
+    // Verify that intersections array contain our 43 intersections.
+    assertEquals("Init should create 43 intersections", intersections.length, 43);
+
+    // For each validPosition, check if the state of the intersection is ONE_PIECE;
     intersections.forEach(function(intersection) {
         assertEquals("Intersection state should be ONE_PIECE", intersection.get_state(), Lyngk.State.ONE_PIECE);
     });
