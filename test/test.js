@@ -92,8 +92,10 @@ LyngkTestCase.prototype.testStory10 = function(){
 };
 
 LyngkTestCase.prototype.testStory11 = function(){
-    // init will create an intersection with a single piece on each validPosition (create the gaming board).
     var engine = new Lyngk.Engine();
+
+    // init_board will create an intersection with a single piece on each validPosition (create the gaming board).
+    engine.init_board();
 
     // Get all intersections of our gaming board.
     var intersections = engine.get_intersections()
@@ -111,6 +113,7 @@ LyngkTestCase.prototype.testStory11 = function(){
 LyngkTestCase.prototype.testStory12 = function(){
     var ivoryPieces = 0, bluePieces = 0, redPieces = 0, blackPieces = 0, greenPieces = 0, whitePieces = 0;
     var engine = new Lyngk.Engine();
+    engine.init_board();
     var intersections = engine.get_intersections();
 
     intersections.forEach(function(intersection) {
