@@ -140,3 +140,13 @@ LyngkTestCase.prototype.testStory13 = function(){
         assertEquals("Intersection height should be 1", hauteur, 1);
     });
 };
+
+LyngkTestCase.prototype.testStory14 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+
+    intersections.forEach(function(intersection) {
+        var pilePiecesInter = intersection.get_pilePieces();
+        assertEquals("Intersection height should be 1", intersection.get_color(), pilePiecesInter[pilePiecesInter.length-1].get_color());
+    });
+};
