@@ -35,6 +35,10 @@ Lyngk.Intersection = function (coord) {
     this.get_color = function () {
         return pilePieces[pilePieces.length-1].get_color();
     }
+
+    this.get_pilePieces = function () {
+        return pilePieces;
+    }
     
     this.get_hauteur = function () {
         return pilePieces.length;
