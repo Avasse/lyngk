@@ -169,3 +169,25 @@ LyngkTestCase.prototype.testStory15 = function(){
     assertEquals("B3 Color should be A3 color before move_pile", colorBeforeMove, interB3.get_color());
     assertEquals("A3 state should be VACANT", Lyngk.State.VACANT, interA3.get_state());
 };
+
+LyngkTestCase.prototype.testStory16 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    // Find intersection in Intersections by to_string his Coordinates
+    var interA3 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "A3";
+    });
+    var interB3 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "B3";
+    });
+    var interB2 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "B2";
+    });
+    engine.move_pile(interA3, interB3);
+    var colorBeforeMove = interB3.get_color();
+    engine.move_pile(interB3, interB2);
+    var test2 = interB2.get_pilePieces();
+    var test4 = interB2.get_hauteur();
+    assertEquals("B2 height should be 3", interB2.get_hauteur(), 3);
+    assertEquals("B2 color should be B3 color before move_pile", colorBeforeMove, interB2.get_color());
+};
