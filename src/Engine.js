@@ -78,7 +78,7 @@ Lyngk.Engine = function () {
     }
     
     this.move_pile = function (interRemove, interAdd) {
-        var piece = interRemove.remove_piece();
-        interAdd.add_piece(piece);
+        var pile = interRemove.remove_pile();
+        interAdd.add_pile(pile);
     }
 };
