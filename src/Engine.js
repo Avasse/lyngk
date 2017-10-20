@@ -4,12 +4,7 @@
 Lyngk.Color = {BLACK: 0, IVORY: 1, BLUE: 2, RED: 3, GREEN: 4, WHITE: 5};
 
 Lyngk.Engine = function () {
-
-    var init = function() {}
-    init();
-
     var intersections = [];
-
     const initPiecesNbColors = [
         {
             nb: 8,
@@ -35,8 +30,7 @@ Lyngk.Engine = function () {
             nb: 3,
             color: Lyngk.Color.WHITE
         }
-    ];
-
+    ]
     //Array prototype created to randomize elements array.
     //Return shuffled array. (found in StackOverflow)
     Array.prototype.randomize = function() {
@@ -51,8 +45,7 @@ Lyngk.Engine = function () {
         return this;
     }
 
-    this.init_board = function () {
-
+    var init = function() {
         var initPieces = [];
 
         //For each number of a given colored piece, add corresponding piece into initPiece array.
@@ -78,6 +71,7 @@ Lyngk.Engine = function () {
             intersections.push(intersection);
         }
     }
+    init();
 
     this.get_intersections = function () {
         return intersections;
