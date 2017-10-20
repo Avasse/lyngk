@@ -136,6 +136,7 @@ LyngkTestCase.prototype.testStory13 = function(){
     var intersections = engine.get_intersections();
 
     intersections.forEach(function(intersection) {
-        assertEquals("Intersection height should be 1", intersections.get_hauteur , 1);
+        var hauteur = intersection.get_hauteur();
+        assertEquals("Intersection height should be 1", hauteur, 1);
     });
 };

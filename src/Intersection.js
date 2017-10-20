@@ -4,7 +4,7 @@ Lyngk.State = {VACANT: 0, ONE_PIECE: 1, STACK: 2, FULL_STACK: 3};
 
 Lyngk.Intersection = function (coord) {
     var state = Lyngk.State.VACANT;
-    var pieces = [];
+    var pilePieces = [];
     var coordinates;
 
     var init = function(coord) {
@@ -18,21 +18,25 @@ Lyngk.Intersection = function (coord) {
 
     this.add_piece = function (p) {
         if (state === Lyngk.State.VACANT) {
-            pieces.push(p)
+            pilePieces.push(p)
             state = Lyngk.State.ONE_PIECE;
         } else if (state === Lyngk.State.ONE_PIECE){
-            pieces.push(p)
+            pilePieces.push(p)
             state = Lyngk.State.STACK;
-        } else if (pieces.length > 1 && pieces.length < 4){
-            pieces.push(p);
+        } else if (pilePieces.length > 1 && pilePieces.length < 4){
+            pilePieces.push(p);
         } else {
-            pieces.push(p);
+            pilePieces.push(p);
             state = Lyngk.State.FULL_STACK;
         }
 
     }
 
     this.get_color = function () {
-        return pieces[pieces.length-1].get_color();
+        return pilePieces[pilePieces.length-1].get_color();
+    }
+    
+    this.get_hauteur = function () {
+        return pilePieces.length;
     }
 };
