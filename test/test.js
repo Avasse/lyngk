@@ -51,7 +51,10 @@ LyngkTestCase.prototype.testStory6 = function(){
     var firstCoordinates = new Lyngk.Coordinates('A',1);
     var secondCoordinates = new Lyngk.Coordinates('B',4);
     var thirdCoordinates = new Lyngk.Coordinates('D',2);
-    assertTrue("Hashes shouldn't be equals", firstCoordinates.to_hash !== secondCoordinates.to_hash !== thirdCoordinates.to_hash);
+    var firstHash = firstCoordinates.to_hash();
+    var secondHash = secondCoordinates.to_hash();
+    var thirdHash = thirdCoordinates.to_hash();
+    assertTrue("Hashes shouldn't be equals", firstHash.to_hash !== secondHash.to_hash !== thirdHash.to_hash);
 };
 
 LyngkTestCase.prototype.testStory7 = function(){
@@ -149,4 +152,20 @@ LyngkTestCase.prototype.testStory14 = function(){
         var pilePiecesInter = intersection.get_pilePieces();
         assertEquals("Intersection height should be 1", intersection.get_color(), pilePiecesInter[pilePiecesInter.length-1].get_color());
     });
+};
+
+LyngkTestCase.prototype.testStory15 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    // Find A3 intersection
+    var interA3 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "A3";
+    });
+    var interB3 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "B3";
+    });
+    var colorBeforeMove = interA3.get_color();
+    engine.move_pile(interA3, interB3);
+    assertEquals("B3 Color should be A3 color before move_pile", colorBeforeMove, interB3.get_color());
+    assertEquals("A3 state should be VACANT", Lyngk.State.VACANT, interA3.get_state());
 };
