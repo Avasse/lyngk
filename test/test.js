@@ -115,11 +115,11 @@ LyngkTestCase.prototype.testStory12 = function(){
 
     intersections.forEach(function(intersection) {
         if (intersection.get_color() === Lyngk.Color.IVORY) ivoryPieces ++;
-        if (intersection.get_color() === Lyngk.Color.BLUE) bluePieces ++;
-        if (intersection.get_color() === Lyngk.Color.RED) redPieces ++;
-        if (intersection.get_color() === Lyngk.Color.BLACK) blackPieces ++;
-        if (intersection.get_color() === Lyngk.Color.GREEN) greenPieces ++;
-        if (intersection.get_color() === Lyngk.Color.WHITE) whitePieces ++;
+        else if (intersection.get_color() === Lyngk.Color.BLUE) bluePieces ++;
+        else if (intersection.get_color() === Lyngk.Color.RED) redPieces ++;
+        else if (intersection.get_color() === Lyngk.Color.BLACK) blackPieces ++;
+        else if (intersection.get_color() === Lyngk.Color.GREEN) greenPieces ++;
+        else if (intersection.get_color() === Lyngk.Color.WHITE) whitePieces ++;
     });
 
     assertEquals("We should have 8 IVORY pieces", ivoryPieces, 8);
@@ -132,5 +132,10 @@ LyngkTestCase.prototype.testStory12 = function(){
 };
 
 LyngkTestCase.prototype.testStory13 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
 
+    intersections.forEach(function(intersection) {
+        assertEquals("Intersection height should be 1", intersections.get_hauteur , 1);
+    });
 };
