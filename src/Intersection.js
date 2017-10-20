@@ -29,7 +29,6 @@ Lyngk.Intersection = function (coord) {
             pilePieces.push(p);
             state = Lyngk.State.FULL_STACK;
         }
-
     }
 
     this.get_color = function () {
@@ -42,5 +41,15 @@ Lyngk.Intersection = function (coord) {
     
     this.get_hauteur = function () {
         return pilePieces.length;
+    }
+
+    this.get_Coordinates = function () {
+        return coordinates;
+    }
+
+    this.remove_piece = function () {
+        var res = pilePieces.pop();
+        state--;
+        return res;
     }
 };

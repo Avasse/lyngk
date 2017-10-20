@@ -5,7 +5,7 @@ Lyngk.Color = {BLACK: 0, IVORY: 1, BLUE: 2, RED: 3, GREEN: 4, WHITE: 5};
 
 Lyngk.Engine = function () {
     var intersections = [];
-    const initPiecesNbColors = [
+    var initPiecesNbColors = [
         {
             nb: 8,
             color: Lyngk.Color.IVORY
@@ -33,17 +33,17 @@ Lyngk.Engine = function () {
     ]
     //Array prototype created to randomize elements array.
     //Return shuffled array. (found in StackOverflow)
-    Array.prototype.randomize = function() {
-        var i = this.length, j, temp;
-        if ( i == 0 ) return this;
-        while ( --i ) {
-            j = Math.floor( Math.random() * ( i + 1 ) );
-            temp = this[i];
-            this[i] = this[j];
-            this[j] = temp;
-        }
-        return this;
-    }
+    // Array.prototype.randomize = function() {
+    //     var i = this.length, j, temp;
+    //     if ( i == 0 ) return this;
+    //     while ( --i ) {
+    //         j = Math.floor( Math.random() * ( i + 1 ) );
+    //         temp = this[i];
+    //         this[i] = this[j];
+    //         this[j] = temp;
+    //     }
+    //     return this;
+    // }
 
     var init = function() {
         var initPieces = [];
@@ -58,7 +58,7 @@ Lyngk.Engine = function () {
         }))
 
         //Randomize initPieces array
-        initPieces = initPieces.randomize();
+        // initPieces = initPieces.randomize();
 
         // For each validPosition add a random piece stocked in initPiece into an intersection
         // Then add the intersection in intersections array.
@@ -75,5 +75,10 @@ Lyngk.Engine = function () {
 
     this.get_intersections = function () {
         return intersections;
+    }
+    
+    this.move_pile = function (interRemove, interAdd) {
+        var piece = interRemove.remove_piece();
+        interAdd.add_piece(piece);
     }
 };

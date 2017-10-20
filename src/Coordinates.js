@@ -19,7 +19,6 @@ Lyngk.Coordinates = function (c, l) {
     init(c, l);
 
     this.is_valid = function () {
-
         if(Lyngk.validPositions.includes(c+l)) return true;
         else return false;
     }
