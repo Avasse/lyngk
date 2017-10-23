@@ -65,7 +65,7 @@ LyngkTestCase.prototype.testStory7 = function(){
 LyngkTestCase.prototype.testStory8 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var intersection = new Lyngk.Intersection();
-    intersection.add_piece(bluePiece);
+    intersection.add_coin(bluePiece);
     assertEquals("Intersection state should be ONE_PIECE", intersection.get_state(), Lyngk.State.ONE_PIECE);
 };
 
@@ -73,8 +73,8 @@ LyngkTestCase.prototype.testStory9 = function(){
     var bluePiece = new Lyngk.Piece(Lyngk.Color.BLUE);
     var redPiece = new Lyngk.Piece(Lyngk.Color.RED);
     var intersection = new Lyngk.Intersection();
-    intersection.add_piece(bluePiece);
-    intersection.add_piece(redPiece);
+    intersection.add_coin(bluePiece);
+    intersection.add_coin(redPiece);
     assertEquals("Intersection state should be STACK", intersection.get_state(), Lyngk.State.STACK);
     assertEquals("Intersection color should be RED", intersection.get_color(), Lyngk.Color.RED);
 };
@@ -86,16 +86,16 @@ LyngkTestCase.prototype.testStory10 = function(){
     var greenPiece = new Lyngk.Piece(Lyngk.Color.GREEN);
     var ivoryPiece = new Lyngk.Piece(Lyngk.Color.IVORY);
     var intersection = new Lyngk.Intersection();
-    intersection.add_piece(bluePiece);
-    intersection.add_piece(redPiece);
-    intersection.add_piece(blackPiece);
-    intersection.add_piece(greenPiece);
-    intersection.add_piece(ivoryPiece);
+    intersection.add_coin(bluePiece);
+    intersection.add_coin(redPiece);
+    intersection.add_coin(blackPiece);
+    intersection.add_coin(greenPiece);
+    intersection.add_coin(ivoryPiece);
     assertEquals("Intersection state should be STACK", intersection.get_state(), Lyngk.State.FULL_STACK);
 };
 
 LyngkTestCase.prototype.testStory11 = function(){
-    // init_board will create an intersection with a single piece on each validPosition (create the gaming board).
+    // init_board will create an intersection with a single coin on each validPosition (create the gaming board).
     var engine = new Lyngk.Engine();
 
     // Get all intersections of our gaming board.
@@ -125,12 +125,12 @@ LyngkTestCase.prototype.testStory12 = function(){
         else if (intersection.get_color() === Lyngk.Color.WHITE) whitePieces ++;
     });
 
-    assertEquals("We should have 8 IVORY pieces", ivoryPieces, 8);
-    assertEquals("We should have 8 BLUE pieces", bluePieces, 8);
-    assertEquals("We should have 8 RED pieces", redPieces, 8);
-    assertEquals("We should have 8 BLACK pieces", blackPieces, 8);
-    assertEquals("We should have 8 GREEN pieces", greenPieces, 8);
-    assertEquals("We should have 8 WHITE pieces", whitePieces, 3);
+    assertEquals("We should have 8 IVORY coins", ivoryPieces, 8);
+    assertEquals("We should have 8 BLUE coins", bluePieces, 8);
+    assertEquals("We should have 8 RED coins", redPieces, 8);
+    assertEquals("We should have 8 BLACK coins", blackPieces, 8);
+    assertEquals("We should have 8 GREEN coins", greenPieces, 8);
+    assertEquals("We should have 8 WHITE coins", whitePieces, 3);
 
 };
 
@@ -149,8 +149,8 @@ LyngkTestCase.prototype.testStory14 = function(){
     var intersections = engine.get_intersections();
 
     intersections.forEach(function(intersection) {
-        var pilePiecesInter = intersection.get_pilePieces();
-        assertEquals("Intersection height should be 1", intersection.get_color(), pilePiecesInter[pilePiecesInter.length-1].get_color());
+        var stackInter = intersection.get_stack();
+        assertEquals("Intersection height should be 1", intersection.get_color(), stackInter[stackInter.length-1].get_color());
     });
 };
 
@@ -165,8 +165,8 @@ LyngkTestCase.prototype.testStory15 = function(){
         return intersection.get_Coordinates().to_string() === "B3";
     });
     var colorBeforeMove = interA3.get_color();
-    engine.move_pile(interA3, interB3);
-    assertEquals("B3 Color should be A3 color before move_pile", colorBeforeMove, interB3.get_color());
+    engine.move_stack(interA3, interB3);
+    assertEquals("B3 Color should be A3 color before move_stack", colorBeforeMove, interB3.get_color());
     assertEquals("A3 state should be VACANT", Lyngk.State.VACANT, interA3.get_state());
 };
 
@@ -183,11 +183,11 @@ LyngkTestCase.prototype.testStory16 = function(){
     var interB2 = intersections.find(function(intersection){
         return intersection.get_Coordinates().to_string() === "B2";
     });
-    engine.move_pile(interA3, interB3);
+    engine.move_stack(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
-    engine.move_pile(interB3, interB2);
+    engine.move_stack(interB3, interB2);
     assertEquals("B2 height should be 3", interB2.get_height(), 3);
-    assertEquals("B2 color should be B3 color before move_pile", colorBeforeMove, interB2.get_color());
+    assertEquals("B2 color should be B3 color before move_stack", colorBeforeMove, interB2.get_color());
 };
 
 LyngkTestCase.prototype.testStory17 = function(){
@@ -200,9 +200,9 @@ LyngkTestCase.prototype.testStory17 = function(){
     var interB3 = intersections.find(function(intersection){
         return intersection.get_Coordinates().to_string() === "B3";
     });
-    var pileHeight = interB2.get_height() + interB3.get_height();
-    engine.move_pile(interB2, interB3);
-    engine.move_pile(interB3, interB2);
-    assertEquals("Pile should be on B3", interB3.get_height(), pileHeight);
+    var stackHeight = interB2.get_height() + interB3.get_height();
+    engine.move_stack(interB2, interB3);
+    engine.move_stack(interB3, interB2);
+    assertEquals("Stack should be on B3", interB3.get_height(), stackHeight);
     assertEquals("B2 should be empty", interB2.get_height(), 0);
 };

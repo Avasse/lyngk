@@ -5,7 +5,7 @@ Lyngk.Color = {BLACK: 0, IVORY: 1, BLUE: 2, RED: 3, GREEN: 4, WHITE: 5};
 
 Lyngk.Engine = function () {
     var intersections = [];
-    var initPiecesNbColors = [
+    var initCoinsNbColors = [
         {
             nb: 8,
             color: Lyngk.Color.IVORY
@@ -46,28 +46,28 @@ Lyngk.Engine = function () {
     // }
 
     var init = function() {
-        var initPieces = [];
+        var initCoins = [];
 
-        //For each number of a given colored piece, add corresponding piece into initPiece array.
-        initPiecesNbColors.forEach((function (pieces){
-            while (pieces.nb !== 0) {
-                var piece = new Lyngk.Piece(pieces.color);
-                initPieces.push(piece);
-                pieces.nb--;
+        //For each number of a given colored coin, add corresponding coin into initPiece array.
+        initCoinsNbColors.forEach((function (coins){
+            while (coins.nb !== 0) {
+                var coin = new Lyngk.Piece(coins.color);
+                initCoins.push(coin);
+                coins.nb--;
             }
         }))
 
-        //Randomize initPieces array
-        // initPieces = initPieces.randomize();
+        //Randomize initCoins array
+        // initCoins = initCoins.randomize();
 
-        // For each validPosition add a random piece stocked in initPiece into an intersection
+        // For each validPosition add a random coin stocked in initPiece into an intersection
         // Then add the intersection in intersections array.
         for (var i = 0; i < Lyngk.validPositions.length; i++){
             var col = Lyngk.validPositions[i].charAt(0);
             var line = Lyngk.validPositions[i].charAt(1);
             var coordinates = new Lyngk.Coordinates(col,line);
             var intersection = new Lyngk.Intersection(coordinates);
-            intersection.add_piece(initPieces[i]);
+            intersection.add_coin(initCoins[i]);
             intersections.push(intersection);
         }
     }
@@ -77,10 +77,10 @@ Lyngk.Engine = function () {
         return intersections;
     }
     
-    this.move_pile = function (interRemove, interAdd) {
+    this.move_stack = function (interRemove, interAdd) {
         if (interAdd.get_height() !== 0) {
-            var pile = interRemove.remove_pile();
-            interAdd.add_pile(pile);
-        } else console.log('Moving Pile on empty Intersection if forbidden')
+            var stack = interRemove.remove_stack();
+            interAdd.add_stack(stack);
+        } else console.log('Moving Pile on empty Intersection is forbidden')
     }
 };
