@@ -42,7 +42,7 @@ Lyngk.Intersection = function (coord) {
         return pilePieces;
     }
     
-    this.get_hauteur = function () {
+    this.get_height = function () {
         return pilePieces.length;
     }
 

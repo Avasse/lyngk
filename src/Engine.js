@@ -78,7 +78,9 @@ Lyngk.Engine = function () {
     }
     
     this.move_pile = function (interRemove, interAdd) {
-        var pile = interRemove.remove_pile();
-        interAdd.add_pile(pile);
+        if (interAdd.get_height() !== 0) {
+            var pile = interRemove.remove_pile();
+            interAdd.add_pile(pile);
+        } else console.log('Moving Pile on empty Intersection if forbidden')
     }
 };
