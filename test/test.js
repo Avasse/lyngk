@@ -139,7 +139,7 @@ LyngkTestCase.prototype.testStory13 = function(){
     var intersections = engine.get_intersections();
 
     intersections.forEach(function(intersection) {
-        var hauteur = intersection.get_hauteur();
+        var hauteur = intersection.get_height();
         assertEquals("Intersection height should be 1", hauteur, 1);
     });
 };
@@ -186,6 +186,23 @@ LyngkTestCase.prototype.testStory16 = function(){
     engine.move_pile(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
     engine.move_pile(interB3, interB2);
-    assertEquals("B2 height should be 3", interB2.get_hauteur(), 3);
+    assertEquals("B2 height should be 3", interB2.get_height(), 3);
     assertEquals("B2 color should be B3 color before move_pile", colorBeforeMove, interB2.get_color());
+};
+
+LyngkTestCase.prototype.testStory17 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    // Find intersection in Intersections by to_string his Coordinates
+    var interB2 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "B2";
+    });
+    var interB3 = intersections.find(function(intersection){
+        return intersection.get_Coordinates().to_string() === "B3";
+    });
+    var pileHeight = interB2.get_height() + interB3.get_height();
+    engine.move_pile(interB2, interB3);
+    engine.move_pile(interB3, interB2);
+    assertEquals("Pile should be on B3", interB3.get_height(), pileHeight);
+    assertEquals("B2 should be empty", interB2.get_height(), 0);
 };
