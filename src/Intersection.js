@@ -13,7 +13,10 @@ Lyngk.Intersection = function (coord) {
     init(coord);
 
     this.get_state = function () {
-        return state;
+        if (pilePieces.length === 0) return Lyngk.State.VACANT;
+        else if (pilePieces.length === 1) return Lyngk.State.ONE_PIECE;
+        else if (pilePieces.length > 1 && pilePieces.length < 5) return Lyngk.State.STACK
+        else return Lyngk.State.FULL_STACK;
     }
 
     this.add_piece = function (p) {
@@ -47,9 +50,13 @@ Lyngk.Intersection = function (coord) {
         return coordinates;
     }
 
-    this.remove_piece = function () {
-        var res = pilePieces.pop();
-        state--;
+    this.remove_pile = function () {
+        var res = pilePieces;
+        pilePieces = [];
         return res;
+    }
+
+    this.add_pile = function (pile) {
+        pilePieces = pilePieces.concat(pile);
     }
 };

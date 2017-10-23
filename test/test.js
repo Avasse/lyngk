@@ -186,8 +186,6 @@ LyngkTestCase.prototype.testStory16 = function(){
     engine.move_pile(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
     engine.move_pile(interB3, interB2);
-    var test2 = interB2.get_pilePieces();
-    var test4 = interB2.get_hauteur();
     assertEquals("B2 height should be 3", interB2.get_hauteur(), 3);
     assertEquals("B2 color should be B3 color before move_pile", colorBeforeMove, interB2.get_color());
 };
