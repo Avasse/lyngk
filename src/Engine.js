@@ -76,11 +76,64 @@ Lyngk.Engine = function () {
     this.get_intersections = function () {
         return intersections;
     }
+
+    this.get_intersection = function (coordinate) {
+        return intersections.find(function(intersection){
+            return intersection.get_Coordinates().to_string() === coordinate;
+        });
+    }
     
-    this.move_stack = function (interRemove, interAdd) {
-        if (interAdd.get_height() !== 0) {
-            var stack = interRemove.remove_stack();
-            interAdd.add_stack(stack);
-        } else console.log('Moving Pile on empty Intersection is forbidden')
+    this.move_stack = function (interStart, interEnd) {
+        if (this.move_validator(interStart, interEnd)) {
+            var stack = interStart.remove_stack();
+            interEnd.add_stack(stack);
+        } else console.log('ERROR: Invalid move')
+    }
+
+    this.get_diagonals = function (startCoordinates) {
+        var diagonals = [];
+        var column = startCoordinates.charCodeAt(0);
+        var line = startCoordinates[1];
+        for (var i = column; i > 'A'.charCodeAt(0) ; i--){
+            var coordinates = String.fromCharCode(i - 1) + (+line - 1);
+            diagonals.push(coordinates);
+            line--;
+        }
+        line = startCoordinates[1];
+        for (var i = column; i < 'I'.charCodeAt(0) ; i++){
+            var coordinates = String.fromCharCode(i + 1) + (+line + 1);
+            diagonals.push(coordinates);
+            line++;
+        }
+        return diagonals;
+    }
+
+    this.is_linear_move = function (startCoordinates, endCoordinates) {
+        var diagonals = this.get_diagonals(startCoordinates);
+        // Check if move is on the same column / line / diagonal
+        if(startCoordinates[0] === endCoordinates[0] | startCoordinates[1] === endCoordinates[1] | diagonals.includes(endCoordinates)) return true;
+    }
+
+    this.move_validator = function (interStart, interEnd) {
+        var startCoordinates = interStart.get_Coordinates().to_string();
+        var endCoordinates = interEnd.get_Coordinates().to_string();
+        // 1 - Check if positions are valids
+        if (Lyngk.validPositions.includes(startCoordinates) && Lyngk.validPositions.includes(endCoordinates)){
+            // 2 - Check if interEnd is not empty
+            if (interEnd.get_height() !== 0) {
+                // 3 - Check if move is linear
+                if (this.is_linear_move(startCoordinates, endCoordinates)) return true;
+                else {
+                    console.log('ERROR: Move should only be linear');
+                    return false;
+                }
+            } else {
+                console.log('ERROR: Moving Stack on empty Intersection is forbidden');
+                return false;
+            }
+        } else {
+            console.log('ERROR: Moving Stack on invalid Coordinates is forbidden');
+            return false;
+        }
     }
 };
