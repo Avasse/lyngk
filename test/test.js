@@ -157,13 +157,8 @@ LyngkTestCase.prototype.testStory14 = function(){
 LyngkTestCase.prototype.testStory15 = function(){
     var engine = new Lyngk.Engine();
     var intersections = engine.get_intersections();
-    // Find A3 intersection
-    var interA3 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "A3";
-    });
-    var interB3 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "B3";
-    });
+    var interA3 = engine.get_intersection("A3");
+    var interB3 = engine.get_intersection("B3");
     var colorBeforeMove = interA3.get_color();
     engine.move_stack(interA3, interB3);
     assertEquals("B3 Color should be A3 color before move_stack", colorBeforeMove, interB3.get_color());
@@ -173,16 +168,9 @@ LyngkTestCase.prototype.testStory15 = function(){
 LyngkTestCase.prototype.testStory16 = function(){
     var engine = new Lyngk.Engine();
     var intersections = engine.get_intersections();
-    // Find intersection in Intersections by to_string his Coordinates
-    var interA3 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "A3";
-    });
-    var interB3 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "B3";
-    });
-    var interB2 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "B2";
-    });
+    var interA3 = engine.get_intersection("A3");
+    var interB3 = engine.get_intersection("B3");
+    var interB2 = engine.get_intersection("B2");
     engine.move_stack(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
     engine.move_stack(interB3, interB2);
@@ -193,16 +181,25 @@ LyngkTestCase.prototype.testStory16 = function(){
 LyngkTestCase.prototype.testStory17 = function(){
     var engine = new Lyngk.Engine();
     var intersections = engine.get_intersections();
-    // Find intersection in Intersections by to_string his Coordinates
-    var interB2 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "B2";
-    });
-    var interB3 = intersections.find(function(intersection){
-        return intersection.get_Coordinates().to_string() === "B3";
-    });
+    var interB2 = engine.get_intersection("B2");
+    var interB3 = engine.get_intersection("B3");
     var stackHeight = interB2.get_height() + interB3.get_height();
     engine.move_stack(interB2, interB3);
     engine.move_stack(interB3, interB2);
     assertEquals("Stack should be on B3", interB3.get_height(), stackHeight);
     assertEquals("B2 should be empty", interB2.get_height(), 0);
+};
+
+LyngkTestCase.prototype.testStory18 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    var interB2 = engine.get_intersection("B2");
+    var interB3 = engine.get_intersection("B3");
+    var interC2 = engine.get_intersection("C2");
+    var stackHeight = interB2.get_height() + interB3.get_height();
+    var stackC2 = interC2.get_height();
+    engine.move_stack(interB2, interB3);
+    engine.move_stack(interB3, interC2);
+    assertEquals("Stack should be on B3", interB3.get_height(), stackHeight);
+    assertEquals("C2 height shouldn't have changed", interC2.get_height(), stackC2);
 };
