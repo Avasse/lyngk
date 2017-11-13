@@ -293,3 +293,8 @@ LyngkTestCase.prototype.testStory23 = function(){
     engine.move_stack(interC4, interC5);
     assertEquals("C5 Shouldn't contain stack of 5 coins", interC5.get_height(), 5);
 };
+
+LyngkTestCase.prototype.testStory22 = function(){
+    var engine = new Lyngk.Engine();
+    assertEquals("P1 always start game", engine.get_playerTurn(), 'P1');
+};
