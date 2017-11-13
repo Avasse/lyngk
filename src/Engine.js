@@ -31,6 +31,9 @@ Lyngk.Engine = function () {
             color: Lyngk.Color.WHITE
         }
     ]
+    var players = ['P1','P2'];
+    var playerTurn;
+
     //Array prototype created to randomize elements array.
     //Return shuffled array. (found in StackOverflow)
     Array.prototype.randomize = function() {
@@ -70,6 +73,7 @@ Lyngk.Engine = function () {
             intersection.add_coin(initCoins[i]);
             intersections.push(intersection);
         }
+        playerTurn = players[0];
     }
     init();
 
@@ -158,6 +162,10 @@ Lyngk.Engine = function () {
             if (startStack.includes(endStack[i])) return false;
         }
         return true;
+    }
+
+    this.get_playerTurn = function () {
+        return playerTurn;
     }
 
     this.move_validator = function (interStart, interEnd) {
