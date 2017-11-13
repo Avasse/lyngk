@@ -114,6 +114,38 @@ Lyngk.Engine = function () {
         if(startCoordinates[0] === endCoordinates[0] | startCoordinates[1] === endCoordinates[1] | diagonals.includes(endCoordinates)) return true;
     }
 
+    this.is_neighbour = function (startCoordinates, endCoordinates) {
+        var ok = true;
+        var startColumn = startCoordinates.charCodeAt(0);
+        var startLine = parseInt(startCoordinates[1]);
+        var endColumn = endCoordinates.charCodeAt(0);
+        var endLine = parseInt(endCoordinates[1]);
+        var deltaColumn = endColumn - startColumn;
+        var deltaLine = endLine - startLine;
+        while (ok && deltaLine > 1 || deltaLine < -1 || deltaColumn > 1 || deltaColumn < -1){
+            if (deltaColumn > 0) {
+                startColumn++;
+                deltaColumn--;
+            }
+            if (deltaColumn < 0){
+                startColumn--;
+                deltaColumn++
+            }
+            if (deltaLine > 0) {
+                startLine++;
+                deltaLine--;
+            }
+            if (deltaLine < 0) {
+                startLine--;
+                deltaLine++;
+            }
+            var coord = String.fromCharCode(startColumn) + startLine;
+            var intersection = this.get_intersection(coord);
+            ok = intersection.get_height() === 0;
+        }
+        return ok;
+    }
+
     this.move_validator = function (interStart, interEnd) {
         var startCoordinates = interStart.get_Coordinates().to_string();
         var endCoordinates = interEnd.get_Coordinates().to_string();
@@ -122,7 +154,13 @@ Lyngk.Engine = function () {
             // 2 - Check if interEnd is not empty
             if (interEnd.get_height() !== 0) {
                 // 3 - Check if move is linear
-                if (this.is_linear_move(startCoordinates, endCoordinates)) return true;
+                if (this.is_linear_move(startCoordinates, endCoordinates)) {
+                    if(this.is_neighbour(startCoordinates, endCoordinates)) return true;
+                    else {
+                        console.log('ERROR: Stacks should be neighbour');
+                        return false;
+                    }
+                }
                 else {
                     console.log('ERROR: Move should only be linear');
                     return false;
