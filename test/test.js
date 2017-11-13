@@ -221,3 +221,23 @@ LyngkTestCase.prototype.testStory19 = function(){
     engine.move_stack(interH5, interF3);
     assertEquals("Stack should be on H5", interH5.get_height(), stackHeight);
 };
+
+LyngkTestCase.prototype.testStory20 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    var interA3 = engine.get_intersection("A3");
+    var interB3 = engine.get_intersection("B3");
+    var interB2 = engine.get_intersection("B2");
+    var interC2 = engine.get_intersection("C2");
+    var interD2 = engine.get_intersection("D2");
+    var interE2 = engine.get_intersection("E2");
+    engine.move_stack(interA3, interB3);
+    engine.move_stack(interB3, interB2);
+    engine.move_stack(interB2, interC2);
+    engine.move_stack(interC2, interD2);
+    var E2Height = interE2.get_height()
+    engine.move_stack(interD2, interE2);
+    var D2Height = interD2.get_height();
+    assertEquals("Stack should be on D2", interD2.get_height(), D2Height);
+    assertEquals("Stack should not be on E2", interE2.get_height(), E2Height);
+};
