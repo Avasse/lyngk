@@ -31,6 +31,7 @@ Lyngk.Engine = function () {
             color: Lyngk.Color.WHITE
         }
     ]
+    var initCoins = [];
     var players = ['P1','P2'];
     var playerTurn;
     var playersColor;
@@ -50,8 +51,6 @@ Lyngk.Engine = function () {
     }
 
     var init = function() {
-        var initCoins = [];
-
         //For each number of a given colored coin, add corresponding coin into initPiece array.
         initCoinsNbColors.forEach((function (coins){
             while (coins.nb !== 0) {
@@ -90,9 +89,9 @@ Lyngk.Engine = function () {
     }
     
     this.move_stack = function (interStart, interEnd) {
-        if (playerTurn === 'P1') playerTurn = players[1];
-        else playerTurn = players[0];
         if (this.move_validator(interStart, interEnd)) {
+            if (playerTurn === 'P1') playerTurn = players[1];
+            else playerTurn = players[0];
             var stack = interStart.remove_stack();
             interEnd.add_stack(stack);
         } else console.log('ERROR: Invalid move')
@@ -181,6 +180,29 @@ Lyngk.Engine = function () {
         return playersColor[player];
     }
 
+    // this.color_isNotClaimed = function (interStart) {
+    //     var stack = interStart.get_stack();
+    //     if (playerTurn === players[0]) {
+    //         stack.forEach(function (p) {
+    //             if (playersColor[1] === p.get_color()) return false;
+    //         })
+    //     }
+    //     else if (playerTurn === players[1]) {
+    //         stack.forEach(function (p) {
+    //             if (playersColor[0] === p.get_color()) return false;
+    //         })
+    //     }
+    //     else return true;
+    // }
+
+    this.get_nbPossibleMoves = function () {
+        var result = 0;
+        initCoins.forEach(function (c) {
+            if(c.get_color() !== Lyngk.Color.WHITE) result++;
+        })
+        return result;
+    }
+
     this.move_validator = function (interStart, interEnd) {
         var startCoordinates = interStart.get_Coordinates().to_string();
         var endCoordinates = interEnd.get_Coordinates().to_string();
@@ -193,7 +215,7 @@ Lyngk.Engine = function () {
                     if(this.is_neighbour(startCoordinates, endCoordinates)) {
                         if (this.isnt_maxHeight(interStart, interEnd)) {
                             if (interStart.get_height() >= interEnd.get_height()) {
-                                if (this.color_isValid(interStart, interEnd)) return true;
+                                if (this.color_isValid(interStart, interEnd))  return true;
                                 else {
                                     console.log('ERROR: Cannot move stack on another that contain the same color');
                                     return false;
