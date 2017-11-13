@@ -173,7 +173,10 @@ LyngkTestCase.prototype.testStory16 = function(){
     var interB2 = engine.get_intersection("B2");
     engine.move_stack(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
+    var test = interB3.get_height();
+    var test1 = interB2.get_height();
     engine.move_stack(interB3, interB2);
+    var test2 = interB2.get_height();
     assertEquals("B2 height should be 3", interB2.get_height(), 3);
     assertEquals("B2 color should be B3 color before move_stack", colorBeforeMove, interB2.get_color());
 };
@@ -254,4 +257,23 @@ LyngkTestCase.prototype.testStory21 = function(){
     engine.move_stack(interC3, interB3);
     assertEquals("B3 Shouldn't have changed", interB3.get_height(), B3Height);
     assertEquals("C3 Shouldn't have changed", interC3.get_height(), C3Height);
+};
+
+LyngkTestCase.prototype.testStory22 = function(){
+    var engine = new Lyngk.Engine();
+    var intersections = engine.get_intersections();
+    var interI7 = engine.get_intersection("I7");
+    var interH6 = engine.get_intersection("H6");
+    var interG4 = engine.get_intersection("G4");
+    var interG5 = engine.get_intersection("G5");
+    var interG6 = engine.get_intersection("G6");
+    engine.move_stack(interI7, interH6);
+    engine.move_stack(interH6, interG4);
+    engine.move_stack(interG4, interG5);
+    engine.move_stack(interG5, interG6);
+    var H6Height = interH6.get_height();
+    var G6Height = interG6.get_height();
+    engine.move_stack(interH6, interG6);
+    assertEquals("H6 Shouldn't have changed", interH6.get_height(), H6Height);
+    assertEquals("G6 Shouldn't have changed", interG6.get_height(), G6Height);
 };
