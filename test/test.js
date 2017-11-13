@@ -173,10 +173,7 @@ LyngkTestCase.prototype.testStory16 = function(){
     var interB2 = engine.get_intersection("B2");
     engine.move_stack(interA3, interB3);
     var colorBeforeMove = interB3.get_color();
-    var test = interB3.get_height();
-    var test1 = interB2.get_height();
     engine.move_stack(interB3, interB2);
-    var test2 = interB2.get_height();
     assertEquals("B2 height should be 3", interB2.get_height(), 3);
     assertEquals("B2 color should be B3 color before move_stack", colorBeforeMove, interB2.get_color());
 };
@@ -276,4 +273,23 @@ LyngkTestCase.prototype.testStory22 = function(){
     engine.move_stack(interH6, interG6);
     assertEquals("H6 Shouldn't have changed", interH6.get_height(), H6Height);
     assertEquals("G6 Shouldn't have changed", interG6.get_height(), G6Height);
+};
+
+LyngkTestCase.prototype.testStory23 = function(){
+    var ok = true;
+    while(ok) {
+        var engine = new Lyngk.Engine();
+        var intersections = engine.get_intersections();
+        var interC1 = engine.get_intersection("C1");
+        var interC2 = engine.get_intersection("C2");
+        var interC3 = engine.get_intersection("C3");
+        var interC4 = engine.get_intersection("C4");
+        var interC5 = engine.get_intersection("C5");
+        if (interC1.get_color() !== interC2.get_color() !== interC3.get_color() !== interC4.get_color() !== interC5.get_color()) ok = false;
+    }
+    engine.move_stack(interC1, interC2);
+    engine.move_stack(interC2, interC3);
+    engine.move_stack(interC3, interC4);
+    engine.move_stack(interC4, interC5);
+    assertEquals("C5 Shouldn't contain stack of 5 coins", interC5.get_height(), 5);
 };
