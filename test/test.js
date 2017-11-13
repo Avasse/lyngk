@@ -294,7 +294,15 @@ LyngkTestCase.prototype.testStory23 = function(){
     assertEquals("C5 Shouldn't contain stack of 5 coins", interC5.get_height(), 5);
 };
 
-LyngkTestCase.prototype.testStory22 = function(){
+LyngkTestCase.prototype.testStory24 = function(){
     var engine = new Lyngk.Engine();
     assertEquals("P1 always start game", engine.get_playerTurn(), 'P1');
+};
+
+LyngkTestCase.prototype.testStory25 = function(){
+    var engine = new Lyngk.Engine();
+    var interC1 = engine.get_intersection("C1");
+    var interC2 = engine.get_intersection("C2");
+    engine.move_stack(interC1, interC2);
+    assertEquals("P1 just played, now it's P2 turn", engine.get_playerTurn(), 'P2');
 };
