@@ -88,6 +88,8 @@ Lyngk.Engine = function () {
     }
     
     this.move_stack = function (interStart, interEnd) {
+        if (playerTurn === 'P1') playerTurn = players[1];
+        else playerTurn = players[0];
         if (this.move_validator(interStart, interEnd)) {
             var stack = interStart.remove_stack();
             interEnd.add_stack(stack);
