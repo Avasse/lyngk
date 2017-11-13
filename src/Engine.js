@@ -33,6 +33,7 @@ Lyngk.Engine = function () {
     ]
     var players = ['P1','P2'];
     var playerTurn;
+    var playersColor;
 
     //Array prototype created to randomize elements array.
     //Return shuffled array. (found in StackOverflow)
@@ -74,6 +75,7 @@ Lyngk.Engine = function () {
             intersections.push(intersection);
         }
         playerTurn = players[0];
+        playersColor = ['Not claimed yet','Not claimed yet'];
     }
     init();
 
@@ -168,6 +170,15 @@ Lyngk.Engine = function () {
 
     this.get_playerTurn = function () {
         return playerTurn;
+    }
+
+    this.claim = function (color) {
+        if (playerTurn === players[0]) playersColor[0] = color;
+        else playersColor[1] = color;
+    }
+
+    this.get_playerColor = function (player) {
+        return playersColor[player];
     }
 
     this.move_validator = function (interStart, interEnd) {
