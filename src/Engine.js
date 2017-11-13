@@ -33,17 +33,17 @@ Lyngk.Engine = function () {
     ]
     //Array prototype created to randomize elements array.
     //Return shuffled array. (found in StackOverflow)
-    // Array.prototype.randomize = function() {
-    //     var i = this.length, j, temp;
-    //     if ( i == 0 ) return this;
-    //     while ( --i ) {
-    //         j = Math.floor( Math.random() * ( i + 1 ) );
-    //         temp = this[i];
-    //         this[i] = this[j];
-    //         this[j] = temp;
-    //     }
-    //     return this;
-    // }
+    Array.prototype.randomize = function() {
+        var i = this.length, j, temp;
+        if ( i == 0 ) return this;
+        while ( --i ) {
+            j = Math.floor( Math.random() * ( i + 1 ) );
+            temp = this[i];
+            this[i] = this[j];
+            this[j] = temp;
+        }
+        return this;
+    }
 
     var init = function() {
         var initCoins = [];
@@ -58,7 +58,7 @@ Lyngk.Engine = function () {
         }))
 
         //Randomize initCoins array
-        // initCoins = initCoins.randomize();
+        initCoins = initCoins.randomize();
 
         // For each validPosition add a random coin stocked in initPiece into an intersection
         // Then add the intersection in intersections array.
@@ -151,6 +151,15 @@ Lyngk.Engine = function () {
         else return false;
     }
 
+    this.color_isValid = function (interStart, interEnd) {
+        var startStack = interStart.get_stack();
+        var endStack = interEnd.get_stack();
+        for (var i = 0; i < endStack.length; i++) {
+            if (startStack.includes(endStack[i])) return false;
+        }
+        return true;
+    }
+
     this.move_validator = function (interStart, interEnd) {
         var startCoordinates = interStart.get_Coordinates().to_string();
         var endCoordinates = interEnd.get_Coordinates().to_string();
@@ -163,7 +172,11 @@ Lyngk.Engine = function () {
                     if(this.is_neighbour(startCoordinates, endCoordinates)) {
                         if (this.isnt_maxHeight(interStart, interEnd)) {
                             if (interStart.get_height() >= interEnd.get_height()) {
-                                return true;
+                                if (this.color_isValid(interStart, interEnd)) return true;
+                                else {
+                                    console.log('ERROR: Cannot move stack on another that contain the same color');
+                                    return false;
+                                }
                             } else {
                                 console.log('ERROR: Cannot move stack on biggest one');
                                 return false;
