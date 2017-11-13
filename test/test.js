@@ -307,7 +307,7 @@ LyngkTestCase.prototype.testStory25 = function(){
     assertEquals("P1 just played, now it's P2 turn", engine.get_playerTurn(), 'P2');
 };
 
-LyngkTestCase.prototype.testStory25 = function(){
+LyngkTestCase.prototype.testStory26 = function(){
     var engine = new Lyngk.Engine();
     var interA3 = engine.get_intersection("A3");
     var interB3 = engine.get_intersection("B3");
@@ -316,5 +316,26 @@ LyngkTestCase.prototype.testStory25 = function(){
     engine.claim(Lyngk.Color.GREEN);
     assertEquals("P1 color is red", engine.get_playerColor(0), Lyngk.Color.RED);
     assertEquals("P2 color is green", engine.get_playerColor(1), Lyngk.Color.GREEN);
+
+};
+
+// LyngkTestCase.prototype.testStory28 = function(){
+//     var engine = new Lyngk.Engine();
+//     var interB5 = engine.get_intersection("B5");
+//     var interB4 = engine.get_intersection("B4");
+//     var interA3 = engine.get_intersection("A3");
+//     engine.claim(Lyngk.Color.RED);
+//     engine.move_stack(interB5, interB4);
+//     interA3.add_coin(new Lyngk.Piece(Lyngk.Color.RED));
+//     var B4Height = interB4.get_height();
+//     var A3Height = interA3.get_height();
+//     engine.move_stack(interA3, interB4);
+//     assertEquals("A3 shouldn't have changed", interA3.get_height(), A3Height);
+//     assertEquals("B4 shouldn't have changed", interB4.get_height(), B4Height);
+// };
+
+LyngkTestCase.prototype.testStory29 = function(){
+    var engine = new Lyngk.Engine();
+    assertEquals("Should be 40 valid moves", engine.get_nbPossibleMoves(), 40);
 
 };
