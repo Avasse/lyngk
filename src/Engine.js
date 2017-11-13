@@ -161,7 +161,13 @@ Lyngk.Engine = function () {
                 // 3 - Check if move is linear
                 if (this.is_linear_move(startCoordinates, endCoordinates)) {
                     if(this.is_neighbour(startCoordinates, endCoordinates)) {
-                        if (this.isnt_maxHeight(interStart, interEnd)) return true;
+                        if (this.isnt_maxHeight(interStart, interEnd)) {
+                            if (interEnd.get_height() > interStart.get_height() && interStart.get_height() < 2 ) {
+                                console.log('ERROR: Coin cannot be move on Stack');
+                                return false;
+                            }
+                            else return true;
+                        }
                         else {
                             console.log('ERROR: Stack length cannot be > 5');
                             return false;
