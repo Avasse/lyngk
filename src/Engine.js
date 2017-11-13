@@ -122,7 +122,7 @@ Lyngk.Engine = function () {
         var endLine = parseInt(endCoordinates[1]);
         var deltaColumn = endColumn - startColumn;
         var deltaLine = endLine - startLine;
-        while (ok && deltaLine > 1 || deltaLine < -1 || deltaColumn > 1 || deltaColumn < -1){
+        while (ok && deltaLine > 1 || deltaLine < -1 || deltaColumn > 1 || deltaColumn < -1) {
             if (deltaColumn > 0) {
                 startColumn++;
                 deltaColumn--;
@@ -146,6 +146,11 @@ Lyngk.Engine = function () {
         return ok;
     }
 
+    this.isnt_maxHeight = function (interStart, interEnd) {
+        if (interStart.get_height() + interEnd.get_height() <= 5) return true;
+        else return false;
+    }
+
     this.move_validator = function (interStart, interEnd) {
         var startCoordinates = interStart.get_Coordinates().to_string();
         var endCoordinates = interEnd.get_Coordinates().to_string();
@@ -155,7 +160,13 @@ Lyngk.Engine = function () {
             if (interEnd.get_height() !== 0) {
                 // 3 - Check if move is linear
                 if (this.is_linear_move(startCoordinates, endCoordinates)) {
-                    if(this.is_neighbour(startCoordinates, endCoordinates)) return true;
+                    if(this.is_neighbour(startCoordinates, endCoordinates)) {
+                        if (this.isnt_maxHeight(interStart, interEnd)) return true;
+                        else {
+                            console.log('ERROR: Stack length cannot be > 5');
+                            return false;
+                        }
+                    }
                     else {
                         console.log('ERROR: Stacks should be neighbour');
                         return false;
