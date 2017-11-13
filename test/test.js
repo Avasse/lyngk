@@ -306,3 +306,15 @@ LyngkTestCase.prototype.testStory25 = function(){
     engine.move_stack(interC1, interC2);
     assertEquals("P1 just played, now it's P2 turn", engine.get_playerTurn(), 'P2');
 };
+
+LyngkTestCase.prototype.testStory25 = function(){
+    var engine = new Lyngk.Engine();
+    var interA3 = engine.get_intersection("A3");
+    var interB3 = engine.get_intersection("B3");
+    engine.claim(Lyngk.Color.RED);
+    engine.move_stack(interA3, interB3);
+    engine.claim(Lyngk.Color.GREEN);
+    assertEquals("P1 color is red", engine.get_playerColor(0), Lyngk.Color.RED);
+    assertEquals("P2 color is green", engine.get_playerColor(1), Lyngk.Color.GREEN);
+
+};
