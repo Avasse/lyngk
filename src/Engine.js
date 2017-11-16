@@ -99,14 +99,21 @@ Lyngk.Engine = function () {
         }
     };
 
+    this.switchPlayer = function () {
+        if (playerTurn === 'P1') playerTurn = players[1];
+        else playerTurn = players[0];
+    }
+
     this.moveStack = function (interStart, interEnd) {
         if (this.moveValidator(interStart, interEnd)) {
             var stack = interStart.removeStack();
             interEnd.addStack(stack);
             this.checkAddPoint(interEnd);
-            if (playerTurn === 'P1') playerTurn = players[1];
-            else playerTurn = players[0];
-        } else console.log('ERROR: Invalid move');
+            this.switchPlayer();
+        } else {
+            this.switchPlayer();
+            console.log('ERROR: Invalid move');
+        }
     };
 
     this.getPlayerScore = function (player) {
