@@ -346,5 +346,13 @@ LyngkTestCase.prototype.testStory28 = function(){
 LyngkTestCase.prototype.testStory29 = function(){
     var engine = new Lyngk.Engine();
     assertEquals("Should be 40 valid moves", engine.getNbPossibleMoves(), 40);
+};
 
+LyngkTestCase.prototype.testStory30 = function(){
+    var engine = new Lyngk.Engine();
+    var interA3 = engine.getIntersection("A3");
+    var interB3 = engine.getIntersection("B3");
+    engine.claim(Lyngk.Color.BLACK);
+    engine.moveStack(interA3, interB3);
+    assertEquals("Should be 32 valid moves", engine.getNbPossibleMoves(), 32);
 };
