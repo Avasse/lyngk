@@ -51,7 +51,7 @@ Lyngk.Engine = function () {
             coins[randI] = coins[index];
             coins[index] = tempCoin;
         }
-    }
+    };
 
     var init = function () {
         initAllCoins();
@@ -254,7 +254,7 @@ Lyngk.Engine = function () {
             });
         }
         return ok;
-    }
+    };
 
     this.getNbPossibleMoves = function () {
         var result = 0;
@@ -273,6 +273,11 @@ Lyngk.Engine = function () {
         var isNotMaxHeight = this.isntMaxHeight(interStart, interEnd);
         return validHeight && isNotMaxHeight && interEnd.getHeight() !== 0;
     };
+    this.colorValidator = function (interStart, interEnd) {
+        var isValid = this.colorIsValid(interStart, interEnd);
+        var isntClaimed = this.colorIsNotClaimed(interStart);
+        return isValid && isntClaimed;
+    };
 
     this.moveValidator = function (interStart, interEnd) {
         var startCoordinates = interStart.getCoordinates().toString();
@@ -281,8 +286,7 @@ Lyngk.Engine = function () {
         var linearMove = this.isLinearMove(startCoordinates, endCoordinates);
         var isNeighbour = this.isNeighbour(startCoordinates, endCoordinates);
         var heightValid = this.EndHeightInfStartHeight(interStart, interEnd);
-        var colorValid = this.colorIsValid(interStart, interEnd);
-        var colorNotClaimed = this.colorIsNotClaimed(interStart);
+        var colorValid = this.colorValidator(interStart, interEnd);
         var validator1 = posValid && linearMove && isNeighbour;
         var validator2 = heightValid && colorValid && colorNotClaimed;
         return validator1 && validator2;
