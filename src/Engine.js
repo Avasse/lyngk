@@ -34,6 +34,7 @@ Lyngk.Engine = function () {
     var players = ['P1', 'P2'];
     var playerTurn;
     var playersColor = ['Not claimed yet', 'Not claimed yet'];
+    var playerPoints = [0, 0];
     var initAllCoins = function () {
         initCoinsNbColors.forEach(function (coinNbColor) {
             while (coinNbColor.nb !== 0) {
@@ -76,16 +77,41 @@ Lyngk.Engine = function () {
             return intersection.getCoordinates().toString() === coordinate;
         });
     };
+    this.deleteStack = function(interEnd) {
+        var deleted = 0;
+        interEnd.getStack().forEach(function (stackCoin, index) {
+            coins.forEach(function (coin) {
+                if (coin.getColor() === stackCoin.getColor() && deleted !== 5) {
+                    deleted++;
+                    coins.splice(index, 1);
+                }
+            });
+        });
+        interEnd.removeStack();
+    };
+    this.checkAddPoint =  function (interEnd) {
+        var heightOk = interEnd.getHeight() === 5;
+        var test = interEnd.getColor();
+        var colorClaimed = playersColor[0] === interEnd.getColor();
+        if (heightOk && colorClaimed){
+            playerPoints[0]++;
+            this.deleteStack(interEnd);
+        }
+    };
 
     this.moveStack = function (interStart, interEnd) {
         if (this.moveValidator(interStart, interEnd)) {
-            if (playerTurn === 'P1') playerTurn = players[1];
-            else playerTurn = players[0];
             var stack = interStart.removeStack();
             interEnd.addStack(stack);
+            this.checkAddPoint(interEnd);
+            if (playerTurn === 'P1') playerTurn = players[1];
+            else playerTurn = players[0];
         } else console.log('ERROR: Invalid move');
     };
 
+    this.getPlayerScore = function (player) {
+        return playerPoints[player];
+    };
     this.getDiagonals = function (startCoordinates) {
         var diagonals = [], column = startCoordinates.charCodeAt(0);
         var line = startCoordinates[1];
@@ -242,7 +268,7 @@ Lyngk.Engine = function () {
         if (playerTurn === players[0]) {
             stack.forEach(function (c) {
                 var coinColor = c.getColor();
-                var playerColor = playersColor[0];
+                var playerColor = playersColor[1];
                 ok = coinColor !== playerColor;
             });
         } else {
@@ -260,7 +286,7 @@ Lyngk.Engine = function () {
         } else {
             return color !== Lyngk.Color.WHITE && color !== playersColor[0];
         }
-    }
+    };
 
     this.getNbPossibleMoves = function () {
         var result = 0, _this = this, test = [];
@@ -271,6 +297,9 @@ Lyngk.Engine = function () {
             }
         });
         return result;
+    };
+    this.getNbCoins = function () {
+        return coins.length;
     };
     this.validPos = function (startCoordinates, endCoordinates) {
         var validStart = Lyngk.validPositions.includes(startCoordinates);
