@@ -240,26 +240,35 @@ Lyngk.Engine = function () {
     this.colorIsNotClaimed = function (interStart) {
         var stack = interStart.getStack(), ok = true;
         if (playerTurn === players[0]) {
-            stack.forEach(function (p) {
-                var coinColor = p.getColor();
+            stack.forEach(function (c) {
+                var coinColor = c.getColor();
                 var playerColor = playersColor[0];
                 ok = coinColor !== playerColor;
             });
-        }
-        else {
-            stack.forEach(function (p) {
-                var coinColor = p.getColor();
+        } else {
+            stack.forEach(function (c) {
+                var coinColor = c.getColor();
                 var playerColor = playersColor[0];
                 ok = coinColor !== playerColor;
             });
         }
         return ok;
     };
+    this.isPossibleColor = function (color) {
+        if(playerTurn === players[0]) {
+            return color !== Lyngk.Color.WHITE && color !== playersColor[1];
+        } else {
+            return color !== Lyngk.Color.WHITE && color !== playersColor[0];
+        }
+    }
 
     this.getNbPossibleMoves = function () {
-        var result = 0;
+        var result = 0, _this = this, test = [];
         coins.forEach(function (c) {
-            if (c.getColor() !== Lyngk.Color.WHITE) result++;
+            test.push(c.getColor());
+            if(_this.isPossibleColor(c.getColor())) {
+                result++;
+            }
         });
         return result;
     };
@@ -288,7 +297,7 @@ Lyngk.Engine = function () {
         var heightValid = this.EndHeightInfStartHeight(interStart, interEnd);
         var colorValid = this.colorValidator(interStart, interEnd);
         var validator1 = posValid && linearMove && isNeighbour;
-        var validator2 = heightValid && colorValid && colorNotClaimed;
+        var validator2 = heightValid && colorValid && colorValid;
         return validator1 && validator2;
     };
 };
