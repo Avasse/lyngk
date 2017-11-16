@@ -328,6 +328,29 @@ LyngkTestCase.prototype.testStory26 = function(){
 
 };
 
+LyngkTestCase.prototype.testStory27 = function(){
+    var engine = new Lyngk.Engine();
+    var interA3 = engine.getIntersection("A3");
+    var interB3 = engine.getIntersection("B3");
+    var interH6 = engine.getIntersection("H6");
+    var interG5 = engine.getIntersection("G5");
+    var interC3 = engine.getIntersection("C3");
+    var interG6 = engine.getIntersection("G6");
+    var interC2 = engine.getIntersection("C2");
+    var interH7 = engine.getIntersection("H7");
+    var interD2 = engine.getIntersection("D2");
+    engine.claim(Lyngk.Color.IVORY);
+    engine.moveStack(interA3, interB3);
+    engine.moveStack(interH6, interG5);
+    engine.moveStack(interB3, interC3);
+    engine.moveStack(interG5, interG6);
+    engine.moveStack(interC3, interC2);
+    engine.moveStack(interG6, interH7);
+    engine.moveStack(interC2, interD2);
+    assertEquals("P1 have one point", engine.getPlayerScore(0), 1);
+    assertEquals("Should be 38 coins", engine.getNbCoins(), 38);
+};
+
 LyngkTestCase.prototype.testStory28 = function(){
     var engine = new Lyngk.Engine();
     var interB5 = engine.getIntersection("B5");
