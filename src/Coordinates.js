@@ -1,4 +1,7 @@
-"use strict";
+/* jshint -W097 */
+/* global Lyngk */
+/* globals Lyngk, b, c */
+'use strict';
 
 Lyngk.validPositions = ['C1', 'B2', 'C2', 'D2', 'E2',
     'A3', 'B3', 'C3', 'D3', 'E3', 'F3', 'G3',
@@ -15,24 +18,26 @@ Lyngk.Coordinates = function (c, l) {
     var init = function(c, l) {
         col = c;
         line = l;
-    }
+    };
     init(c, l);
 
-    this.is_valid = function () {
-        if(Lyngk.validPositions.includes(c+l)) return true;
-        else return false;
-    }
+    this.isValid = function () {
+        return Lyngk.validPositions.includes(c+l);
+    };
 
-    this.to_string = function () {
-        if (this.is_valid()) return (c+l).toString();
-        else return 'invalid'
-    }
+    this.toString = function () {
+        if (this.isValid()) {
+            return (c+l).toString();
+        } else {
+            return 'invalid';
+        }
+    };
 
     this.clone = function () {
         return new Lyngk.Coordinates(c, l);
-    }
+    };
 
-    this.to_hash = function () {
-        return Lyngk.validPositions.indexOf(this.to_string())
-    }
+    this.toHash = function () {
+        return Lyngk.validPositions.indexOf(this.toString());
+    };
 };

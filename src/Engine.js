@@ -2,7 +2,6 @@
 
 // enums definition
 Lyngk.Color = {BLACK: 0, IVORY: 1, BLUE: 2, RED: 3, GREEN: 4, WHITE: 5};
-
 Lyngk.Engine = function () {
     var intersections = [];
     var initCoinsNbColors = [
@@ -30,222 +29,247 @@ Lyngk.Engine = function () {
             nb: 3,
             color: Lyngk.Color.WHITE
         }
-    ]
+    ];
     var initCoins = [];
-    var players = ['P1','P2'];
+    var players = ['P1', 'P2'];
     var playerTurn;
-    var playersColor;
+    var playersColor = ['Not claimed yet', 'Not claimed yet'];
 
-    //Array prototype created to randomize elements array.
-    //Return shuffled array. (found in StackOverflow)
-    Array.prototype.randomize = function() {
-        var i = this.length, j, temp;
-        if ( i == 0 ) return this;
-        while ( --i ) {
-            j = Math.floor( Math.random() * ( i + 1 ) );
-            temp = this[i];
-            this[i] = this[j];
-            this[j] = temp;
-        }
-        return this;
-    }
-
-    var init = function() {
-        //For each number of a given colored coin, add corresponding coin into initPiece array.
-        initCoinsNbColors.forEach((function (coins){
+    var init = function () {
+        initCoinsNbColors.forEach((function (coins) {
             while (coins.nb !== 0) {
                 var coin = new Lyngk.Piece(coins.color);
                 initCoins.push(coin);
                 coins.nb--;
             }
-        }))
+        }));
 
-        //Randomize initCoins array
-        initCoins = initCoins.randomize();
-
-        // For each validPosition add a random coin stocked in initPiece into an intersection
         // Then add the intersection in intersections array.
-        for (var i = 0; i < Lyngk.validPositions.length; i++){
+        for (var i = 0; i < Lyngk.validPositions.length; i++) {
             var col = Lyngk.validPositions[i].charAt(0);
             var line = Lyngk.validPositions[i].charAt(1);
-            var coordinates = new Lyngk.Coordinates(col,line);
+            var coordinates = new Lyngk.Coordinates(col, line);
             var intersection = new Lyngk.Intersection(coordinates);
-            intersection.add_coin(initCoins[i]);
+            intersection.addCoin(initCoins[i]);
             intersections.push(intersection);
         }
         playerTurn = players[0];
-        playersColor = ['Not claimed yet','Not claimed yet'];
-    }
+    };
     init();
 
-    this.get_intersections = function () {
+    this.getIntersections = function () {
         return intersections;
-    }
+    };
 
-    this.get_intersection = function (coordinate) {
-        return intersections.find(function(intersection){
-            return intersection.get_Coordinates().to_string() === coordinate;
+    this.getIntersection = function (coordinate) {
+        return intersections.find(function (intersection) {
+            return intersection.getCoordinates().toString() === coordinate;
         });
-    }
-    
-    this.move_stack = function (interStart, interEnd) {
-        if (this.move_validator(interStart, interEnd)) {
+    };
+
+    this.moveStack = function (interStart, interEnd) {
+        if (this.moveValidator(interStart, interEnd)) {
             if (playerTurn === 'P1') playerTurn = players[1];
             else playerTurn = players[0];
-            var stack = interStart.remove_stack();
-            interEnd.add_stack(stack);
-        } else console.log('ERROR: Invalid move')
-    }
+            var stack = interStart.removeStack();
+            interEnd.addStack(stack);
+        } else console.log('ERROR: Invalid move');
+    };
 
-    this.get_diagonals = function (startCoordinates) {
-        var diagonals = [];
-        var column = startCoordinates.charCodeAt(0);
+    this.getDiagonals = function (startCoordinates) {
+        var diagonals = [], column = startCoordinates.charCodeAt(0);
         var line = startCoordinates[1];
-        for (var i = column; i > 'A'.charCodeAt(0) ; i--){
-            var coordinates = String.fromCharCode(i - 1) + (+line - 1);
-            diagonals.push(coordinates);
+        for (var i = column; i > 'A'.charCodeAt(0); i--) {
+            diagonals.push(String.fromCharCode(i - 1) + (+line - 1));
             line--;
         }
         line = startCoordinates[1];
-        for (var i = column; i < 'I'.charCodeAt(0) ; i++){
-            var coordinates = String.fromCharCode(i + 1) + (+line + 1);
-            diagonals.push(coordinates);
+        for (var j = column; j < 'I'.charCodeAt(0); j++) {
+            diagonals.push(String.fromCharCode(j + 1) + (+line + 1));
             line++;
         }
         return diagonals;
-    }
+    };
 
-    this.is_linear_move = function (startCoordinates, endCoordinates) {
-        var diagonals = this.get_diagonals(startCoordinates);
+    this.isLinearMove = function (startCoordinates, endCoordinates) {
+        var diagonals = this.getDiagonals(startCoordinates);
+        var sameColumn = startCoordinates[0] === endCoordinates[0];
+        var sameLine = startCoordinates[1] === endCoordinates[1];
+        var sameDiag = diagonals.includes(endCoordinates);
         // Check if move is on the same column / line / diagonal
-        if(startCoordinates[0] === endCoordinates[0] | startCoordinates[1] === endCoordinates[1] | diagonals.includes(endCoordinates)) return true;
-    }
-
-    this.is_neighbour = function (startCoordinates, endCoordinates) {
-        var ok = true;
-        var startColumn = startCoordinates.charCodeAt(0);
-        var startLine = parseInt(startCoordinates[1]);
-        var endColumn = endCoordinates.charCodeAt(0);
-        var endLine = parseInt(endCoordinates[1]);
-        var deltaColumn = endColumn - startColumn;
-        var deltaLine = endLine - startLine;
-        while (ok && deltaLine > 1 || deltaLine < -1 || deltaColumn > 1 || deltaColumn < -1) {
-            if (deltaColumn > 0) {
-                startColumn++;
+        return sameColumn | sameLine | sameDiag;
+    };
+    this.testDeltaColumn = function (deltaColumn) {
+        return deltaColumn > 1 || deltaColumn < -1;
+    };
+    this.getDeltaColumns = function (deltaColumn, startCoord) {
+        var array = [], column, coord;
+        while (this.testDeltaColumn(deltaColumn)) {
+            if (deltaColumn < 0) {
+                deltaColumn++;
+                column = startCoord.charCodeAt(0) - 1;
+            } else {
                 deltaColumn--;
+                column = startCoord.charCodeAt(0) + 1;
             }
-            if (deltaColumn < 0){
-                startColumn--;
-                deltaColumn++
-            }
-            if (deltaLine > 0) {
-                startLine++;
-                deltaLine--;
-            }
+            coord = String.fromCharCode(column) + startCoord[1];
+            array.push(coord);
+        }
+        return array;
+    };
+    this.testDeltaLine = function (deltaLine) {
+        return deltaLine > 1 || deltaLine < -1;
+    };
+    this.getDeltaLines = function (deltaLine, startCoord) {
+        var array = [];
+        while (this.testDeltaLine(deltaLine)) {
             if (deltaLine < 0) {
-                startLine--;
                 deltaLine++;
+                startCoord = startCoord[0] + (parseInt(startCoord[1]) - 1);
+            } else {
+                deltaLine--;
+                startCoord = startCoord[0] + (parseInt(startCoord[1]) + 1);
             }
-            var coord = String.fromCharCode(startColumn) + startLine;
-            var intersection = this.get_intersection(coord);
-            ok = intersection.get_height() === 0;
+            array.push(startCoord);
+        }
+        return array;
+    };
+    this.linearNeighbours = function (deltaColumn, deltaLine, startCoord) {
+        var coords;
+        if (deltaColumn === 0) {
+            coords = this.getDeltaLines(deltaLine, startCoord);
+        } else {
+            coords = this.getDeltaColumns(deltaColumn, startCoord);
+        }
+        return coords;
+    };
+    this.increaseDecreaseCoord = function (startCoord, deltaColumn) {
+        var coord;
+        if (deltaColumn > 1) {
+            coord = String.fromCharCode((startCoord.charCodeAt(0) + 1));
+            coord += parseInt(startCoord[1]) + 1;
+        } else {
+            coord = String.fromCharCode((startCoord.charCodeAt(0) - 1));
+            coord += parseInt(startCoord[1]) - 1;
+        }
+        return coord;
+    };
+    this.diagNeighbours = function (deltaColumn,deltaLine,startCoord) {
+        var coords = [], coord = startCoord;
+        while (this.testDeltaColumn(deltaColumn)) {
+            coord = this.increaseDecreaseCoord(coord, deltaColumn);
+            if (deltaColumn > 1){
+                deltaLine--;
+                deltaColumn--;
+            } else {
+                deltaLine++;
+                deltaColumn++;
+            }
+            coords.push(coord);
+        }
+        return coords;
+    };
+    this.testValidDelta = function (deltaColumn, deltaLine) {
+        var testColumn = this.testDeltaColumn(deltaColumn);
+        var testLine = this.testDeltaLine(deltaLine);
+        return testColumn || testLine;
+    };
+    this.areEmptyCoords = function (coords) {
+        var ok;
+        for (var i = 0; i < coords.length; i++) {
+            var intersection = this.getIntersection(coords[i]);
+            ok = intersection.getHeight() === 0;
         }
         return ok;
-    }
+    };
+    this.isNullDelta = function (deltaColumn, deltaLine) {
+        return deltaColumn === 0 || deltaLine === 0;
+    };
+    this.isNeighbour = function (startCoord, endCoord) {
+        var ok = true, coords = [];
+        var deltaC = endCoord.charCodeAt(0) - startCoord.charCodeAt(0);
+        var deltaL = endCoord[1] - startCoord[1];
+        if (this.testValidDelta(deltaC, deltaL)) {
+            if (this.isNullDelta(deltaC, deltaL)) {
+                coords = this.linearNeighbours(deltaC, deltaL, startCoord);
+            } else {
+                coords = this.diagNeighbours(deltaC, deltaL, startCoord);
+            }
+            ok = this.areEmptyCoords(coords);
+        }
+        return ok;
+    };
 
-    this.isnt_maxHeight = function (interStart, interEnd) {
-        if (interStart.get_height() + interEnd.get_height() <= 5) return true;
+    this.isntMaxHeight = function (interStart, interEnd) {
+        if (interStart.getHeight() + interEnd.getHeight() <= 5) return true;
         else return false;
-    }
+    };
 
-    this.color_isValid = function (interStart, interEnd) {
-        var startStack = interStart.get_stack();
-        var endStack = interEnd.get_stack();
+    this.colorIsValid = function (interStart, interEnd) {
+        var startStack = interStart.getStack();
+        var endStack = interEnd.getStack();
         for (var i = 0; i < endStack.length; i++) {
-            if (startStack.includes(endStack[i])) return false;
+            if (startStack.includes(endStack[i].getColor())) return false;
         }
         return true;
-    }
+    };
 
-    this.get_playerTurn = function () {
+    this.getPlayerTurn = function () {
         return playerTurn;
-    }
+    };
 
     this.claim = function (color) {
         if (playerTurn === players[0]) playersColor[0] = color;
         else playersColor[1] = color;
-    }
+    };
 
-    this.get_playerColor = function (player) {
+    this.getPlayerColor = function (player) {
         return playersColor[player];
-    }
+    };
 
     // this.color_isNotClaimed = function (interStart) {
-    //     var stack = interStart.get_stack();
+    //     var stack = interStart.getStack();
     //     if (playerTurn === players[0]) {
     //         stack.forEach(function (p) {
-    //             if (playersColor[1] === p.get_color()) return false;
+    //             if (playersColor[1] === p.getColor()) return false;
     //         })
     //     }
     //     else if (playerTurn === players[1]) {
     //         stack.forEach(function (p) {
-    //             if (playersColor[0] === p.get_color()) return false;
+    //             if (playersColor[0] === p.getColor()) return false;
     //         })
     //     }
     //     else return true;
     // }
 
-    this.get_nbPossibleMoves = function () {
+    this.getNbPossibleMoves = function () {
         var result = 0;
         initCoins.forEach(function (c) {
-            if(c.get_color() !== Lyngk.Color.WHITE) result++;
-        })
+            if (c.getColor() !== Lyngk.Color.WHITE) result++;
+        });
         return result;
-    }
+    };
+    this.validPos = function (startCoordinates, endCoordinates) {
+        var validStart = Lyngk.validPositions.includes(startCoordinates);
+        var validEnd = Lyngk.validPositions.includes(endCoordinates);
+        return  validStart || validEnd ;
+    };
+    this.EndHeightInfStartHeight = function (interStart, interEnd) {
+        var validHeight = interStart.getHeight() >= interEnd.getHeight();
+        var isNotMaxHeight = this.isntMaxHeight(interStart, interEnd);
+        return validHeight && isNotMaxHeight && interEnd.getHeight() !== 0;
+    };
 
-    this.move_validator = function (interStart, interEnd) {
-        var startCoordinates = interStart.get_Coordinates().to_string();
-        var endCoordinates = interEnd.get_Coordinates().to_string();
-        // 1 - Check if positions are valids
-        if (Lyngk.validPositions.includes(startCoordinates) && Lyngk.validPositions.includes(endCoordinates)){
-            // 2 - Check if interEnd is not empty
-            if (interEnd.get_height() !== 0) {
-                // 3 - Check if move is linear
-                if (this.is_linear_move(startCoordinates, endCoordinates)) {
-                    if(this.is_neighbour(startCoordinates, endCoordinates)) {
-                        if (this.isnt_maxHeight(interStart, interEnd)) {
-                            if (interStart.get_height() >= interEnd.get_height()) {
-                                if (this.color_isValid(interStart, interEnd))  return true;
-                                else {
-                                    console.log('ERROR: Cannot move stack on another that contain the same color');
-                                    return false;
-                                }
-                            } else {
-                                console.log('ERROR: Cannot move stack on biggest one');
-                                return false;
-                            }
-                        }
-                        else {
-                            console.log('ERROR: Stack length cannot be > 5');
-                            return false;
-                        }
-                    }
-                    else {
-                        console.log('ERROR: Stacks should be neighbour');
-                        return false;
-                    }
-                }
-                else {
-                    console.log('ERROR: Move should only be linear');
-                    return false;
-                }
-            } else {
-                console.log('ERROR: Moving Stack on empty Intersection is forbidden');
-                return false;
-            }
-        } else {
-            console.log('ERROR: Moving Stack on invalid Coordinates is forbidden');
-            return false;
-        }
-    }
+    this.moveValidator = function (interStart, interEnd) {
+        var startCoordinates = interStart.getCoordinates().toString();
+        var endCoordinates = interEnd.getCoordinates().toString();
+        var posValid = this.validPos(startCoordinates, endCoordinates);
+        var linearMove = this.isLinearMove(startCoordinates, endCoordinates);
+        var isNeighbour = this.isNeighbour(startCoordinates, endCoordinates);
+        var heightValid = this.EndHeightInfStartHeight(interStart, interEnd);
+        var colorValid = this.colorIsValid(interStart, interEnd);
+        var validator1 = posValid && linearMove && isNeighbour;
+        var validator2 = heightValid && colorValid;
+        return validator1 && validator2;
+    };
 };

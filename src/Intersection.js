@@ -3,60 +3,46 @@
 Lyngk.State = {VACANT: 0, ONE_PIECE: 1, STACK: 2, FULL_STACK: 3};
 
 Lyngk.Intersection = function (coord) {
-    var state = Lyngk.State.VACANT;
-    var stack = [];
-    var coordinates;
-
+    var state = Lyngk.State.VACANT, stack = [], coordinates;
     var init = function(coord) {
         coordinates = coord;
-    }
+    };
     init(coord);
 
-    this.get_state = function () {
-        if (stack.length === 0) return Lyngk.State.VACANT;
-        else if (stack.length === 1) return Lyngk.State.ONE_PIECE;
-        else if (stack.length > 1 && stack.length < 5) return Lyngk.State.STACK
-        else return Lyngk.State.FULL_STACK;
-    }
+    this.getState = function () {
+        return state;
+    };
 
-    this.add_coin = function (p) {
-        if (state === Lyngk.State.VACANT) {
-            stack.push(p)
-            state = Lyngk.State.ONE_PIECE;
-        } else if (state === Lyngk.State.ONE_PIECE){
-            stack.push(p)
-            state = Lyngk.State.STACK;
-        } else if (stack.length > 1 && stack.length < 4){
-            stack.push(p);
-        } else {
-            stack.push(p);
-            state = Lyngk.State.FULL_STACK;
+    this.addCoin = function (p) {
+        stack.push(p);
+        if (state < 3) {
+            state += 1;
         }
-    }
+    };
 
-    this.get_color = function () {
-        return stack[stack.length-1].get_color();
-    }
+    this.getColor = function () {
+        return stack[stack.length - 1].getColor();
+    };
 
-    this.get_stack = function () {
+    this.getStack = function () {
         return stack;
-    }
-    
-    this.get_height = function () {
+    };
+    this.getHeight = function () {
         return stack.length;
-    }
+    };
 
-    this.get_Coordinates = function () {
+    this.getCoordinates = function () {
         return coordinates;
-    }
+    };
 
-    this.remove_stack = function () {
+    this.removeStack = function () {
         var res = stack;
         stack = [];
+        state = Lyngk.State.VACANT;
         return res;
-    }
+    };
 
-    this.add_stack = function (s) {
+    this.addStack = function (s) {
         stack = stack.concat(s);
-    }
+    };
 };
