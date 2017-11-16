@@ -2,6 +2,8 @@
 
 var LyngkTestCase = TestCase("LyngkTestCase");
 
+Math.seedrandom("Lyngk");
+
 LyngkTestCase.prototype.testStory1 = function(){
     var coordinates = new Lyngk.Coordinates('A',1);
     assertFalse(coordinates.isValid());
@@ -326,20 +328,20 @@ LyngkTestCase.prototype.testStory26 = function(){
 
 };
 
-// LyngkTestCase.prototype.testStory28 = function(){
-//     var engine = new Lyngk.Engine();
-//     var interB5 = engine.getIntersection("B5");
-//     var interB4 = engine.getIntersection("B4");
-//     var interA3 = engine.getIntersection("A3");
-//     engine.claim(Lyngk.Color.RED);
-//     engine.moveStack(interB5, interB4);
-//     interA3.addCoin(new Lyngk.Piece(Lyngk.Color.RED));
-//     var B4Height = interB4.getHeight();
-//     var A3Height = interA3.getHeight();
-//     engine.moveStack(interA3, interB4);
-//     assertEquals("A3 shouldn't have changed", interA3.getHeight(), A3Height);
-//     assertEquals("B4 shouldn't have changed", interB4.getHeight(), B4Height);
-// };
+LyngkTestCase.prototype.testStory28 = function(){
+    var engine = new Lyngk.Engine();
+    var interB5 = engine.getIntersection("B5");
+    var interB4 = engine.getIntersection("B4");
+    var interA3 = engine.getIntersection("A3");
+    engine.claim(Lyngk.Color.RED);
+    engine.moveStack(interB5, interB4);
+    interA3.addCoin(new Lyngk.Piece(Lyngk.Color.RED));
+    var B4Height = interB4.getHeight();
+    var A3Height = interA3.getHeight();
+    engine.moveStack(interA3, interB4);
+    assertEquals("A3 shouldn't have changed", interA3.getHeight(), A3Height);
+    assertEquals("B4 shouldn't have changed", interB4.getHeight(), B4Height);
+};
 
 LyngkTestCase.prototype.testStory29 = function(){
     var engine = new Lyngk.Engine();
